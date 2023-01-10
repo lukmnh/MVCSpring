@@ -18,14 +18,14 @@ import com.example.services.RegionService;
 @Controller
 @RequestMapping("/region")
 public class RegionController {
-    // RegionDao reg = new RegionDao(DBConnection.getConnection());
-    @Autowired
-    private RegionService regionService;
+    RegionDao reg = new RegionDao(DBConnection.getConnection());
+//     @Autowired
+//     private RegionService regionService;
 
     @GetMapping
     public String index(Model model) {
         // Object region = reg.getAllData();
-        model.addAttribute("regions", regionService.getAll());
+        model.addAttribute("regions", reg.getAll());
         return "region/region-index";
     }
 
@@ -33,7 +33,7 @@ public class RegionController {
     public String form(@PathVariable(required = false) Integer Id, Model model) {
         if (Id != null) {
             // get data by id for update
-            model.addAttribute("region", regionService.getById(Id));
+            model.addAttribute("region", reg.getById(Id));
         } else {
             // insert data for new data
             model.addAttribute("region", new Region());
@@ -47,9 +47,9 @@ public class RegionController {
     public String save(@Nullable Region region) {
         Boolean result;
         if (region.getId() != null) {
-            result = regionService.save(region);
+            result = reg.save(region);
         } else {
-            result = regionService.save(region);
+            result = reg.save(region);
         }
 
         if (result) {
@@ -62,7 +62,7 @@ public class RegionController {
     // DELETE
     @PostMapping(value = "/delete/{id}")
     public String delete(@PathVariable Integer id) {
-        Boolean result = regionService.delete(id);
+        Boolean result = reg.delete(id);
         if (result) {
             return "redirect:/region";
         } else {
